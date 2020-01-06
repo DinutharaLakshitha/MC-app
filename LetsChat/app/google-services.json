@@ -1,52 +1,37 @@
 {
   "project_info": {
-    "project_number": "129551577682",
-    "firebase_url": "https://letschat-dad54.firebaseio.com",
-    "project_id": "letschat-dad54",
-    "storage_bucket": "letschat-dad54.appspot.com"
+    "project_number": "118592845888",
+    "firebase_url": "https://mc-app-2d209.firebaseio.com",
+    "project_id": "mc-app-2d209",
+    "storage_bucket": "mc-app-2d209.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:129551577682:android:80a888d376a37daf",
+        "mobilesdk_app_id": "1:118592845888:android:1d0a56523a08a5c85007a5",
         "android_client_info": {
           "package_name": "com.example.singhkshitiz.letschat"
         }
       },
       "oauth_client": [
         {
-          "client_id": "129551577682-d485mb8jf9n55btqlfj61btpde3ldb51.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.singhkshitiz.letschat",
-            "certificate_hash": "7c66a02f33e2f1e917a1d897551bacbf45fd1c87"
-          }
-        },
-        {
-          "client_id": "129551577682-vl5808n4ihdlit34q6ec4g7s844ln9b3.apps.googleusercontent.com",
+          "client_id": "118592845888-0m5j4s8e0l1h24tl62fqgugo021p9skl.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBqtOOsyktExhHtJEmpUsG8sE1t_B7fJOQ"
+          "current_key": "AIzaSyDhL7Z-VeKGzmRe3HAviUdzabukLIKPDGA"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "129551577682-vl5808n4ihdlit34q6ec4g7s844ln9b3.apps.googleusercontent.com",
+              "client_id": "118592845888-0m5j4s8e0l1h24tl62fqgugo021p9skl.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }
