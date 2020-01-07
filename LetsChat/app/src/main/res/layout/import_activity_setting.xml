@@ -60,7 +60,7 @@
             android:layout_width="250dp"
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="90dp"
             android:background="#142422"
             android:onClick="buttonIsClicked"
             android:text="Change Image"
@@ -79,13 +79,15 @@
 
         <Switch
             android:id="@+id/privacySwitch"
-            android:layout_width="wrap_content"
+            android:layout_width="246dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
             android:layout_margin="10dp"
+            android:background="@color/colorAccent"
             android:checked="false"
             android:padding="10dp"
             android:text="HIDE ME  "
+            android:textAlignment="center"
             tools:checked="false" />
 
     </LinearLayout>
