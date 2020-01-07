@@ -37,9 +37,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     MyFragmentPagerAdapter mFragmentPagerAdapter;
     TabLayout mtabLayout;
     DatabaseReference mDatabaseReference;
+    DatabaseReference friendDatabaseReference;
     //    FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
     private static final String TAG = "MyActivity";
@@ -78,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         mtabLayout.setupWithViewPager(mviewPager);
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+        friendDatabaseReference = FirebaseDatabase.getInstance().getReference().child("friends");
 //        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 //        fetchLastLocation();
         startLocationUpdates();
@@ -123,15 +128,17 @@ public class MainActivity extends AppCompatActivity {
                 Looper.myLooper());
     }
 
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(final Location location) {
         // New location has now been determined
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+
+
         // You can now create a LatLng Object for use with maps
 //        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        Log.i("MainActivity", String.valueOf(location.getLatitude()));
+//        Log.i("MainActivity", String.valueOf(location.getLatitude()));
 
         FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
         if(current_user!=null){
@@ -140,6 +147,41 @@ public class MainActivity extends AppCompatActivity {
             userMap.put("Latitude",location.getLatitude());
             userMap.put("Longitude",location.getLongitude());
             mDatabaseReference.child(uid).updateChildren(userMap);
+
+            friendDatabaseReference.child(uid).addValueEventListener(new ValueEventListener(){
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot friendId : dataSnapshot.getChildren()){
+                        System.out.println(friendId.getKey());
+                        mDatabaseReference.child(friendId.getKey()).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+//                                System.out.println(dataSnapshot.getValue());
+                                System.out.println(dataSnapshot.child("name").getValue());
+//                                System.out.println(dataSnapshot.child("Longitude").getValue());
+                                float[] results = new float[1];
+//                                double startLatitude = location.getLatitude().;
+                                Location.distanceBetween(location.getLatitude(), location.getLongitude(), ((double) dataSnapshot.child("Latitude").getValue()), ((double) dataSnapshot.child("Longitude").getValue()), results);
+                                System.out.println(results[0]);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                System.out.println("The read failed: " + databaseError.getCode());
+                            }
+                        });
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    System.out.println("The read failed: " + databaseError.getCode());
+                }
+            });
+
+
         }
 
     }
@@ -177,31 +219,6 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-
-//    private void fetchLastLocation() {
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, new String[]
-//                    {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
-//            return;
-//        }
-//        Task<Location> task = fusedLocationProviderClient.getLastLocation();
-//        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-//            @Override
-//            public void onSuccess(Location location) {
-//                if (location != null) {
-//                    currentLocation = location;
-////                    Toast.makeText(getApplicationContext(), currentLocation.getLatitude()
-////                            + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
-////                    SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-////                            .findFragmentById(R.id.map);
-////                    mapFragment.getMapAsync(MainActivity.this);
-//                    Log.i(TAG, "Latitude" + currentLocation.getLatitude());
-//                    Log.i(TAG, "Longitude" + currentLocation.getLongitude());
-//
-//                }
-//            }
-//        });
-//    }
 
     //----SHOWING ALERT DIALOG FOR EXITING THE APP----
     @Override
@@ -268,6 +285,10 @@ public class MainActivity extends AppCompatActivity {
         }
         if(item.getItemId()==R.id.allUsers){
             Intent intent=new Intent(MainActivity.this,UserActivity.class);
+            startActivity(intent);
+        }
+        if(item.getItemId()==R.id.fCircle){
+            Intent intent=new Intent(MainActivity.this,MapsActivity.class);
             startActivity(intent);
         }
 
