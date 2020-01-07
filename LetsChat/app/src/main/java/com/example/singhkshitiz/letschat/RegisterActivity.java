@@ -105,6 +105,7 @@ public class RegisterActivity extends AppCompatActivity {
                     userMap.put("image","default");
                     userMap.put("thumb_image","default");
                     userMap.put("online","true");
+                    userMap.put("privacy", "false");
 
                     mDatabase.child(uid).setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

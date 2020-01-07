@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,6 +83,37 @@ public class SettingActivity extends AppCompatActivity {
         mDatabaseReference.keepSynced(true);
 
         mStorageReference = FirebaseStorage.getInstance().getReference();
+
+        final Switch simpleSwitch = (Switch) findViewById(R.id.privacySwitch);
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child("privacy").getValue().equals("true")){
+                    simpleSwitch.setChecked(true);
+                }else {
+                    simpleSwitch.setChecked(false);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+
+        simpleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Map privacyMap = new HashMap();
+                if(b){
+                    privacyMap.put("privacy", "true");
+                }else{
+                    privacyMap.put("privacy", "false");
+                }
+                mDatabaseReference.updateChildren(privacyMap);
+            }
+        });
 
 
         //--------ADDING VIEW-------

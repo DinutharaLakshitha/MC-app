@@ -7,9 +7,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Looper;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +33,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -63,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
     private LocationRequest mLocationRequest;
     private long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
     private long FASTEST_INTERVAL = 2000; /* 2 sec */
+
+    LatLng myPosition;
+    Bundle fLocations;
 
     //Toolbar mtoolbar;
     @Override
@@ -147,23 +153,22 @@ public class MainActivity extends AppCompatActivity {
             userMap.put("Latitude",location.getLatitude());
             userMap.put("Longitude",location.getLongitude());
             mDatabaseReference.child(uid).updateChildren(userMap);
+             myPosition = new LatLng(location.getLatitude(),location.getLongitude());
 
             friendDatabaseReference.child(uid).addValueEventListener(new ValueEventListener(){
 
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    fLocations = new Bundle();
                     for(DataSnapshot friendId : dataSnapshot.getChildren()){
-                        System.out.println(friendId.getKey());
+//                        System.out.println(friendId.getKey());
                         mDatabaseReference.child(friendId.getKey()).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-//                                System.out.println(dataSnapshot.getValue());
-                                System.out.println(dataSnapshot.child("name").getValue());
-//                                System.out.println(dataSnapshot.child("Longitude").getValue());
-                                float[] results = new float[1];
-//                                double startLatitude = location.getLatitude().;
-                                Location.distanceBetween(location.getLatitude(), location.getLongitude(), ((double) dataSnapshot.child("Latitude").getValue()), ((double) dataSnapshot.child("Longitude").getValue()), results);
-                                System.out.println(results[0]);
+                                if(dataSnapshot.child("online").getValue().toString().equals("true") && dataSnapshot.child("privacy").getValue().equals("false")){
+                                    fLocations.putParcelable(dataSnapshot.child("name").getValue().toString(),new LatLng(((double) dataSnapshot.child("Latitude").getValue()), ((double) dataSnapshot.child("Longitude").getValue())));
+                                }
+
                             }
 
                             @Override
@@ -289,6 +294,8 @@ public class MainActivity extends AppCompatActivity {
         }
         if(item.getItemId()==R.id.fCircle){
             Intent intent=new Intent(MainActivity.this,MapsActivity.class);
+            intent.putExtra("me",myPosition);
+            intent.putExtra("friends",fLocations);
             startActivity(intent);
         }
 
