@@ -61,10 +61,10 @@
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="120dp"
-            android:background="#FFFFFF"
+            android:background="#142422"
             android:onClick="buttonIsClicked"
             android:text="Change Image"
-            android:textColor="@color/colorBackground" />
+            android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/buttonChangeStatus"
@@ -72,7 +72,7 @@
             android:layout_height="50dp"
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginTop="10dp"
-            android:background="#d67601"
+            android:background="#142422"
             android:onClick="buttonIsClicked"
             android:text="CHANGE STATUS"
             android:textColor="#FFFFFF" />

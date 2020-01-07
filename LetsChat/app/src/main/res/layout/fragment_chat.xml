@@ -5,7 +5,7 @@
     tools:context="com.example.singhkshitiz.letschat.Fragments.ChatFragment">
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/chatRecycleList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/chatRecycleList"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 </FrameLayout>
