@@ -20,14 +20,14 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter{
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                RequestFragment requestFragment=new RequestFragment();
-                return requestFragment;
-            case 1:
                 ChatFragment chatFragment=new ChatFragment();
                 return chatFragment;
-            case 2:
+            case 1:
                 FriendFragment friendFragment=new FriendFragment();
                 return friendFragment;
+            case 2:
+                RequestFragment requestFragment=new RequestFragment();
+                return requestFragment;
         }
         return null;
     }
@@ -41,11 +41,11 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter{
     public CharSequence getPageTitle(int position) {
         switch(position){
             case 0:
-                return "REQUESTS";
-            case 1:
                 return "CHATS";
-            case 2:
+            case 1:
                 return "FRIENDS";
+            case 2:
+                return "REQUESTS";
             default:
                 return null;
         }
