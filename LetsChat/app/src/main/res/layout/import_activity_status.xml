@@ -25,7 +25,7 @@
         android:layout_gravity="right"
         android:layout_marginRight="20dp"
         android:layout_marginTop="30dp"
-        android:background="@color/colorAccent"
+        android:background="#1183ca"
         android:onClick="buttonIsClicked"
         android:padding="8dp"
         android:text="Save Changes"
